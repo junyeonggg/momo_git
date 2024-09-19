@@ -1,0 +1,202 @@
+<html layout:decorate="~{layout/layout}">
+<head>
+<title>마이페이지</title>
+</head>
+<body>
+	<div layout:fragment="section" class="section">
+		<aside th:insert="~{index::leftside}"></aside>
+		<!-- 회원정보 폼  -->
+		<div class="mypage_select_flex">
+			<div class="mypage_flex_item">
+				<!-- 내정보를 볼지, 매장정보를 볼지 선택 버튼 -->
+				<input sec:authorize="hasRole('ADMIN')" class="select_btn" type="button" onclick="mineOrStore(this)"
+					data-target="admin" value="관리자">
+				<div id="admin" class="section_memberinfo display_items"
+					hidden="hidden">
+					<div class="display_target">
+						<input type="button" onclick="updateInfo()" value="회원 리스트">
+						<div id="member_list">
+							<table id="admin_tbl">
+								<tr>
+									<th>번호</th>
+									<th>user_id</th>
+									<th>user_pw</th>
+									<th>권한</th>
+								</tr>
+								<tr th:each="m,info : ${members}">
+									<td th:text="${info.count}"></td>
+									<td th:text="${m.user_id}"></td>
+									<td><input type="password" th:value="${m.user_pw}"
+										readonly="readonly"></td>
+									<td th:text="${m.user_permit}=='5'?'사업자':'일반'"></td>
+									<td><input type="button" value="X" onclick="delete_member(this)" th:data-user-id="${m.user_id}"></td>
+
+								</tr>
+							</table>
+
+						</div>
+						<div id="owner_list"></div>
+
+					</div>
+				</div>
+			</div>
+
+
+			<div class="mypage_flex_item">
+				<!-- 내정보를 볼지, 매장정보를 볼지 선택 버튼 -->
+				<input class="select_btn" type="button" onclick="mineOrStore(this)"
+					data-target="infoForm" value="내 정보 보기">
+				<div id="infoForm" class="section_memberinfo display_items"
+					hidden="hidden">
+					<div class="display_target">
+						<input type="button" onclick="updateInfo()" value="정보 수정하기">
+						<form name="joinForm" action="/join" method="post">
+							<table id="tbl_1">
+								<tr>
+									<td>아이디 :</td>
+									<th><input id="user_id" name="user_id" type="text"
+										th:value="${memberDto.user_id}" readonly="readonly"></th>
+								</tr>
+								<tr>
+									<td>비밀번호 :</td>
+									<th><input type="button" onclick="updatePwPop()"
+										value="비밀번호 바꾸기"></th>
+								</tr>
+								<tr>
+									<td>이름 :</td>
+									<th><input id="user_name" name="user_name"
+										class="inputJoin" type="text"
+										th:value="${memberDto.user_name}" data-flag="false"
+										disabled="disabled"></th>
+								</tr>
+								<tr>
+									<td>주소 :</td>
+									<th><input id="user_addr" name="user_addr"
+										class="inputJoin" type="text"
+										th:value="${memberDto.user_addr}" data-flag="false"
+										disabled="disabled"></th>
+								</tr>
+								<tr>
+									<td>이메일 :</td>
+									<th><input id="user_email" name="user_email"
+										class="inputJoin" type="text"
+										th:value="${memberDto.user_email}" data-flag="false"
+										disabled="disabled"></th>
+								</tr>
+								<tr>
+									<td>전화번호 :</td>
+									<th><input id="user_tel" name="user_tel" class="inputJoin"
+										type="text" th:value="${memberDto.user_tel}" data-flag="false"
+										disabled="disabled"></th>
+								</tr>
+								<tr>
+									<td>생년월일 :</td>
+									<th><input id="user_birth" name="user_birth"
+										class="inputJoin" type="text"
+										th:value="${memberDto.user_birth}" data-flag="false"
+										disabled="disabled"></th>
+								</tr>
+								<tr>
+									<td>성별 :</td>
+									<td><input class="inputJoin" name="user_gender"
+										type="radio"
+										th:checked="${memberDto.user_gender}=='M'?'checked':null"
+										value="M" data-flag="false" disabled="disabled">남성 <input
+										class="inputJoin" name="user_gender" type="radio"
+										th:checked="${memberDto.user_gender}=='F'?'checked':null"
+										value="F" data-flag="false" disabled="disabled">여성</td>
+								</tr>
+								<tr>
+									<td>권한 :</td>
+									<th><input type="text" th:value="${memberDto.user_permit}"
+										disabled="disabled"></th>
+								</tr>
+							</table>
+						</form>
+						<input id="updateComp" type="hidden" onclick="joinFormCheck()"
+							value="수정완료"> <input type="button" value="회원탈퇴">
+					</div>
+				</div>
+			</div>
+			<!-- 회원정보 폼 끝  -->
+
+
+			<!-- 매장 정보보기  -->
+			<div class="mypage_flex_item">
+				<input class="select_btn" type="button" onclick="mineOrStore(this)"
+					data-target="storeInfoForm" value="매장 정보보기">
+				<div id="storeInfoForm" hidden="hidden" class="display_items">
+					<div class="display_target">
+						<table id="tbl_2">
+							<tr>
+								<th>번호</th>
+								<th>상호명</th>
+								<th>주소</th>
+								<th>전화번호</th>
+								<th>사업자 등록번호</th>
+								<th>홈페이지 유무</th>
+							</tr>
+							<tr th:each="owner,info : ${ownerDto}">
+								<td th:text="${info.count}"></td>
+								<td th:text="${owner.owner_bm}"></td>
+								<td th:text="${owner.owner_addr}"></td>
+								<td th:text="${owner.store_tel}"></td>
+								<td th:text="${owner.owner_eid}"></td>
+								<td th:if="${owner.store_place_no}!=null"><a
+									th:href="@{'/store?store='+${owner.owner_eid}}">홈페이지 가기</a></td>
+								<td th:if="${owner.store_place_no}==null"><a
+									th:href="@{'/owner_store_form?owner_eid='+${owner.owner_eid}}">홈페이지
+										만들기</a></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<!-- 매장 정보보기 끝 -->
+
+
+				<!-- 매장 등록하기 -->
+				<div class="mypage_flex_item">
+					<input class="select_btn" type="button" onclick="mineOrStore(this)"
+						data-target="storeForm" value="매장 등록하기">
+					<div id="storeForm" class="display_items" hidden="hidden">
+						<div class="display_target">
+							<form name="ownerForm" action="ownerinsert" method="post">
+								<table>
+									<tr>
+										<td>상호명</td>
+										<th><input class="inputStore" id="b_bm" name="owner_bm"
+											type="text"></th>
+									</tr>
+									<tr>
+										<td>사업자 등록번호</td>
+										<th><input class="inputStore" id="eid" name="owner_eid"
+											type="text" placeholder="- 빼고 입력"></th>
+									</tr>
+									<tr>
+										<td>개업 연 월 일</td>
+										<td><input class="inputStore" id="start_dt" type="text"
+											placeholder="20000101"></td>
+									</tr>
+									<tr>
+										<td>사업장 소재지(시/구)</td>
+										<th><input class="inputStore" id="b_adr"
+											name="owner_addr" type="text"></th>
+									</tr>
+									<tr>
+										<td>대표자 명</td>
+										<td><input class="inputStore" id="p_nm" type="text"></td>
+										<td><input type="button" onclick="eidCheck()" value="등록"></td>
+									</tr>
+								</table>
+							</form>
+						</div>
+					</div>
+					<!-- 매장 등록하기 끝 -->
+				</div>
+			</div>
+		</div>
+
+		<aside th:insert="~{index::rightside}"></aside>
+	</div>
+</body>
+</html>

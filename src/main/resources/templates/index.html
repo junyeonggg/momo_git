@@ -1,0 +1,173 @@
+<html layout:decorate="~{layout/layout}">
+
+<head>
+<title>인덱스</title>
+
+</head>
+<body>
+
+
+	<div layout:fragment="section" class="section">
+		<aside th:fragment="leftside" class="aside_left">
+			<div class="underline">
+				<b>지역별</b>
+			</div>
+			<ul class="cities" th:each="city : ${leftside}">
+				<li class="arrow"><a th:href="@{'/stores?si_do='+${city}}"
+					th:text="${city}"></a> <a href="#" onclick="aside_si_gun_gu(this)"
+					th:data-city="${city}" data-flag="false">▽</a> <!-- △△▴▵▷▷▸▹▻▻▽▽▾▿◁◁◂◃◅◅ --></li>
+			</ul>
+		</aside>
+		<div class="flex-container-col">
+			<div class="flex-title">
+				<b>지역별 <span class="redfont">인기</span>매장
+				</b>
+			</div>
+			<div class="flex-container-row">
+				<div class="row-item">
+					<div class="row-item-title">서울/경기/인천</div>
+					<!-- 서울/경기의 매장에서 조회수 top5 -->
+					<table>
+						<tr>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">번호</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">상호명</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">조회수</td>
+						</tr>
+						<tr th:each="s_g,info : ${s_g_list}" onclick="testt(this)" th:data-eid="${s_g.owner_eid}">
+							<td th:text="${info.count}"></td>
+							<!-- 번호 -->
+							<td><a th:href="@{'/store?store='+${s_g.owner_eid}}"
+								th:text="${s_g.owner_bm}"></a></td>
+							<!-- 상호명 -->
+							<td th:text="${s_g.store_view}"></td>
+							<!-- 조회수 -->
+						</tr>
+					</table>
+				</div>
+				<div class="row-item">
+					<div class="row-item-title">강원도</div>
+					<table>
+						<tr>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">번호</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">상호명</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">조회수</td>
+						</tr>
+						<tr th:each="g,info : ${g_list}" onclick="testt(this)" th:data-eid="${g.owner_eid}">
+							<td th:text="${info.count}"></td>
+							<!-- 번호 -->
+							<td><a th:href="@{'/store?store='+${g.owner_eid}}"
+								th:text="${g.owner_bm}"></a></td>
+							<!-- 상호명 -->
+							<td th:text="${g.store_view}"></td>
+							<!-- 조회수 -->
+						</tr>
+					</table>
+				</div>
+				<div class="row-item">
+					<div class="row-item-title">충청/대전/세종</div>
+					<table>
+						<tr>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">번호</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">상호명</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">조회수</td>
+						</tr>
+						<tr th:each="c_d_s,info : ${c_d_s_list}" onclick="testt(this)" th:data-eid="${c_d_s.owner_eid}">
+							<td th:text="${info.count}"></td>
+							<!-- 번호 -->
+							<td><a th:href="@{'/store?store='+${c_d_s.owner_eid}}"
+								th:text="${c_d_s.owner_bm}"></a></td>
+							<!-- 상호명 -->
+							<td th:text="${c_d_s.store_view}"></td>
+							<!-- 조회수 -->
+						</tr>
+					</table>
+				</div>
+				<div class="row-item">
+					<div class="row-item-title">경상도/울산/부산/대구</div>
+					<table>
+						<tr>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">번호</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">상호명</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">조회수</td>
+						</tr>
+						<tr th:each="s_g,info : ${g_u_b_d_ist}" onclick="testt(this)" th:data-eid="${s_g.owner_eid}">
+							<td th:text="${info.count}"></td>
+							<!-- 번호 -->
+							<td><a th:href="@{'/store?store='+${s_g.owner_eid}}"
+								th:text="${s_g.owner_bm}"></a></td>
+							<!-- 상호명 -->
+							<td th:text="${s_g.store_view}"></td>
+							<!-- 조회수 -->
+						</tr>
+					</table>
+				</div>
+				<div class="row-item">
+					<div class="row-item-title">전라도/광주</div>
+					<table>
+						<tr>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">번호</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">상호명</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">조회수</td>
+						</tr>
+						<tr
+							th:each="s_g,info : ${g_g_g_list}" onclick="testt(this)" th:data-eid="${s_g.owner_eid}">
+							<td th:text="${info.count}"></td>
+							<!-- 번호 -->
+							<td><a th:href="@{'/store?store='+${s_g.owner_eid}}"
+								th:text="${s_g.owner_bm}"></a></td>
+							<!-- 상호명 -->
+							<td th:text="${s_g.store_view}"></td>
+							<!-- 조회수 -->
+						</tr>
+					</table>
+				</div>
+				<div class="row-item">
+					<div class="row-item-title">제주도</div>
+					<table>
+						<tr>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">번호</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">상호명</td>
+							<td
+								style="border-bottom: double #BB2649; background-color: #E8476A; color: white;">조회수</td>
+						</tr>
+						<tr th:each="s_g,info : ${gegu_list}" onclick="testt(this)" th:data-eid="${s_g.owner_eid}">
+							<td th:text="${info.count}"></td>
+							<!-- 번호 -->
+							<td><a th:href="@{'/store?store='+${s_g.owner_eid}}"
+								th:text="${s_g.owner_bm}"></a></td>
+							<!-- 상호명 -->
+							<td th:text="${s_g.store_view}"></td>
+							<!-- 조회수 -->
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<aside th:fragment="rightside" class="aside_right">
+			광
+			<p>고</p>
+			<p>란</p>
+		</aside>
+	</div>
+
+
+</body>
+</html>
+

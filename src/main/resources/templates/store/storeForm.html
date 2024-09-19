@@ -1,0 +1,117 @@
+<html layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>홈페이지 만들기</title>
+</head>
+<body>
+	<div layout:fragment="section" class="section">
+		<aside th:insert="~{index::leftside}"></aside>
+
+		<!-- 게시글 박스 -->
+		<div class="article">
+			<form name="owner_store_form" action="/owner_store_form"
+				method="post" enctype="multipart/form-data">
+				<input id="owner_eid" name="owner_eid" type="hidden"
+					th:value="${ownerDto.owner_eid}">
+				<!-- article_header -->
+				<div class="store_flex_col">
+					<!-- 홈페이지 타이틀 -->
+					<div class="store_flex_item">
+						<h1 th:text="${ownerDto.owner_bm}"></h1>
+					</div>
+					<!--  				홈페이지 nav -->
+					<div class="nav store_flex_item">
+						<ul class="nav_list">
+							<li><a href="#">메뉴</a></li>
+							<li><a href="#">공지사항</a></li>
+							<li><a href="#">리뷰</a></li>
+						</ul>
+					</div>
+					메뉴
+					<div class="item_title">
+						<b>Best / New</b>
+					</div>
+					<div class="store_flex_item">
+						<div class="menu_flex_container">
+							<div class="menuImg" th:each="menu : ${menus}">
+								<div>
+									<input style="color: red;" type="button"
+										th:data-menu_no="${menu.menu_no}" onclick="deleteMenu(this)"
+										value="메뉴 삭제"> <img th:if="${menu.photo_path}!=null"
+										alt="s"
+										th:src="@{'/downloadMenuImg?menu_no='+${menu.menu_no}}">
+									<div class="menuInfo">
+										<p class="underline_menu"
+											th:text="${menu.menu_name}+' / '+ ${#numbers.formatDecimal(menu.menu_price,3,1)}/10000"></p>
+										<p class="underline_menu" th:text="${menu.menu_info}"></p>
+									</div>
+								</div>
+							</div>
+							<!--  -->
+							<div class="menuImg">
+								<div>
+									<input type="button" onclick="add_menu(this)" value="메뉴추가">
+								</div>
+							</div>
+							<!--  -->
+
+						</div>
+					</div>
+				</div>
+				<div class="item_title">
+					<b>공지사항</b>
+				</div>
+				<div class="store_flex_item">
+					<div>
+						<table class="announce_tbl">
+							<tr>
+								<th style="width: 150px;">번호</th>
+								<th style="width: 700px;">제목</th>
+								<th style="width: 350px;">작성 일</th>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>휴일 공지 입니다.</td>
+								<td>2024-08-13</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div id="item_title" class="item_title">
+					<b>위치정보</b>
+				</div>
+				<div class="content_div" id="location">
+					<input id="addr1" type="text" th:value="${ownerDto.owner_addr}"
+						readonly="readonly"> <input id="addr2" name="store_addr"
+						type="text" placeholder="상세주소(건물번호까지)" th:value="${ownerDto.store_addr}">
+					<input id="place_name" type="hidden"
+						th:value="${ownerDto.owner_bm}"> <input type="button"
+						onclick="addr_check();" value="위치 확인">
+				</div>
+				<div> <!-- 위치를 기반으로 얻는 정보 (1. 카테고리, 2.건물번호, 3.전화번호) -->
+					<input id="category" name="category" type="text" th:value="${cate}" placeholder="카테고리" readonly="readonly">
+					<input id="store_place_no" name="store_place_no" type="text" th:value="${ownerDto.store_place_no}" placeholder="건물번호" readonly="readonly">
+					<input id="store_tel" name="store_tel" type="text" th:value="${ownerDto.store_tel}" placeholder="전화번호" readonly="readonly">
+				</div>
+				
+				<div class="store_flex_item">
+					<div id="loc">
+						<input id="place_name" type="hidden"
+							th:value="${ownerDto.owner_bm}">
+					</div>
+					<div th:if="${ownerDto.store_addr}!=null" hidden="hidden" id="iframe_target">
+						<iframe id="locFrame" style="border: 0;"
+							th:src="@{'https://map.kakao.com/link/map/'+${ownerDto.store_place_no}}"></iframe>
+					</div>
+				</div>
+				<div>
+					<input type="button" onclick="sendForm()" value="등록하기">
+				</div>
+			</form>
+			<!-- 게시글 폼 끝  -->
+
+		</div>
+		<aside th:insert="~{index::rightside}"></aside>
+	</div>
+</body>
+</html>

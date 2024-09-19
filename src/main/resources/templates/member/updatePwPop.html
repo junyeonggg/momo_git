@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="js/script.js"></script>
+</head>
+<body>
+	<form name="updatePwForm" action="/updatePw" method="post">
+		<table id="pwTarget">
+			<tr>
+				<th>현재비밀번호</th>
+				<th><input id="currentPw" type="password"></th>
+				<td><input type="button" onclick="currentPwCheck(this)" value="확인"></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

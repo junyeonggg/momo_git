@@ -1,0 +1,221 @@
+<html layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="section" class="section">
+		<aside th:insert="~{index::leftside}">ss</aside>
+		<!-- 홈페이지 -->
+		<div class="store_flex_col">
+			<!-- 로그인한 id와 게시글작성자 id가 같으면 수정,삭제 버튼 -->
+			<div th:if="${user}==${store.user_id}">
+				<a th:href="@{'/owner_store_form?owner_eid='+${store.owner_eid}}"><button>수정하기</button></a>
+				<a th:href="@{'/owner_store_form?owner_eid='+${store.owner_eid}}"><button>삭제하기</button></a>
+			</div>
+			<!-- 홈페이지 타이틀 -->
+			<div class="store_flex_item">
+				<h1 th:text="${store.owner_bm}"></h1>
+			</div>
+			<!-- 홈페이지 nav -->
+			<div class="nav store_flex_item">
+				<ul class="nav_list">
+					<li><a href="#">메뉴</a></li>
+					<li><a href="#">공지사항</a></li>
+					<li><a href="#">리뷰</a></li>
+				</ul>
+			</div>
+
+			<!-- 메뉴 -->
+			<div class="item_title">
+				<b>Best / New</b>
+			</div>
+			<div class="store_flex_item">
+				<div class="menu_flex_container">
+					<!-- 이미지박스 -->
+					<div class="menuImg" th:each="menu : ${menus}">
+						<div>
+							<img th:if="${menu.photo_path}!=null" alt="s"
+								th:src="@{'/downloadMenuImg?menu_no='+${menu.menu_no}}">
+							<div class="menuInfo">
+								<p class="underline_menu"
+									th:text="${menu.menu_name}+' / '+ ${#numbers.formatDecimal(menu.menu_price,3,1)}/10000"></p>
+								<p class="underline_menu" th:text="${menu.menu_info}"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 공지사항 -->
+			<div class="item_title">
+				<b>공지사항</b>
+				<div th:if="${user}==${store.user_id}">
+					<input type="button" onclick="mentionDivOpen()" value="공지사항 쓰기">
+
+				</div>
+			</div>
+			<div class="store_flex_item">
+				<div>
+					<table class="announce_tbl">
+						<tr>
+							<th style="width: 150px;">번호</th>
+							<th style="width: 700px;">제목</th>
+							<th style="width: 350px;">작성 일</th>
+						</tr>
+						<tr class="tbl_mention_body" th:if="${m.type==1}"
+							th:each="m,info: ${mentions}">
+							<td th:text="${info.count}"></td>
+							<td th:text="${m.mention_title}" onclick="mention_detail(this)"
+								th:data-target="${info.count}"></td>
+							<td th:text="${m.comment_create_date}"></td>
+							<td th:id="mention_modal_div+${info.count}"
+								class="mention_modal_td">
+								<div class="mention_modal_div">
+									<div class="xBtnDiv">
+										<input type="button" onclick="cancer_mention2(this)"
+											th:data-target="${info.count}" value="X">
+									</div>
+									<div th:if="${user}==${store.user_id}">
+										<button onclick="updateMention(this)"
+											th:data-target="${info.count}">수정하기</button>
+										<button onclick="deleteMention(this)"
+											th:data-target="${info.count}">삭제하기</button>
+									</div>
+									<form action="/updateMention">
+										<table class=tbl_mention>
+											<tr>
+												<th hidden="hidden"><input type="text"
+													th:id="comment_no+${info.count}" th:value="${m.comment_no}"></th>
+												<th>제목</th>
+												<td><input th:id="mention_title_span+${info.count}"
+													style="font-size: large; color: red; text-align: center;"
+													type="text" th:value="${m.mention_title}"
+													disabled="disabled"></td>
+											</tr>
+											<tr>
+												<th>내용</th>
+												<td><textarea
+														th:id="mention_content_span+${info.count}"
+														th:text="${m.comment_content}" disabled="disabled"></textarea></td>
+											</tr>
+											<tr>
+												<td colspan="2"><input
+													style="width: 80px; height: 25px; background-color: gray; color: white; border: none;"
+													type="button" onclick="cancer_mention2(this)"
+													th:data-target="${info.count}" value="취소"> <input
+													hidden="hidden" th:id="updateBtn+${info.count}"
+													style="width: 80px; height: 25px; background-color: gray; color: white; border: none;"
+													type="button" onclick="update_mention(this)"
+													th:data-target="${info.count}" value="수정완료"></td>
+											</tr>
+										</table>
+									</form>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div id="item_title" class="item_title">
+				<b>위치정보</b>
+			</div>
+			<div class="store_flex_item">
+				<div id="loc">
+					<input id="place_name" type="hidden" th:value="${store.owner_bm}">
+					<!-- 					<input type="button" th:onclick="test(this)"
+						th:value="${store.owner_addr}+${store.store_addr}"> -->
+				</div>
+				<div th:if="${store.store_addr}!=null" hidden="hidden" id="iframe_target">
+					<iframe id="locFrame" style="border: 0;"
+						th:src="@{'https://map.kakao.com/link/map/'+${store.store_place_no}}"></iframe>
+				</div>
+			</div>
+
+			<!-- 댓글  -->
+			<div class="item_title">
+				<b>댓글</b>
+			</div>
+			<div sec:authorize="isAuthenticated()">
+				<input type="button" onclick="insertCommentBtn()" value="댓글 달기">
+				<div id="commentFormDiv" hidden="hidden">
+					<!-- 댓글 등록 폼 -->
+					<table>
+						<tr>
+							<td>아이디</td>
+							<td>내용</td>
+						</tr>
+						<tr>
+							<td><input id="user_id" name="user_id" type="text"
+								th:value="${user}" readonly="readonly"></td>
+							<td><input id="comment_content" name="comment_content"
+								type="text" placeholder="내용"></td>
+							<td><input id="owner_eid" name="owner_eid" type="hidden"
+								th:value="${store.owner_eid}"></td>
+							<td><input type="button" onclick="insertComment()"
+								value="등록"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div id="reply">
+				<!-- 댓글 리스트 -->
+				<table class="reply_tbl">
+					<tr>
+						<th style="width: 150px;">번호</th>
+						<th style="width: 200px;">아이디</th>
+						<th style="width: 600px;">내용</th>
+						<th style="width: 300px;">작성일</th>
+					</tr>
+					<tr th:if="${comment.type==0}" th:each="comment,info: ${comments}">
+						<td th:text="${info.count}"></td>
+						<td th:text="${comment.user_id}"></td>
+						<td th:text="${comment.comment_content}"></td>
+						<td th:text="${comment.comment_create_date}"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<!-- 공지사항 모달창 -->
+		<div id="mentionModal">
+			<div id="mentionDiv">
+				<div class="xBtnDiv">
+					<input type="button" onclick="cancer_mention()" value="X">
+				</div>
+				<table class=tbl_mention>
+					<tr>
+						<th>제목</th>
+						<td><input id="mention_title" type="text" placeholder="제목"></td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td><textarea id="mention_content" placeholder="공지내용"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input
+							style="width: 80px; height: 25px; background-color: gray; color: white; border: none;"
+							type="button" onclick="insert_mention(this)" value="등록하기">
+							<input
+							style="width: 80px; height: 25px; background-color: gray; color: white; border: none;"
+							type="button" onclick="cancer_mention()" value="취소"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<!-- 리모콘 -->
+		<div id="remocon">
+			<div>
+				<a href="#">Top</a>
+			</div>
+			<div>
+				<a href="#item_title">위치</a>
+			</div>
+			<div>
+				<a href="#reply">리뷰</a>
+			</div>
+		</div>
+		<aside th:insert="~{index::rightside}"></aside>
+	</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<html layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="section" class="section">
+		<aside th:insert="~{index::leftside}"></aside>
+		<!-- section -->
+		<div id="random_section_div">
+			<!-- 필터링 Div  -->
+			<div id="filters_div" class="flex_item_rand">
+				<!-- 필터1 : 지역 -->
+				<div th:each="s : ${leftside}" class="ss" data-flag="false"
+					th:data-city="${s}" onclick="city_detail(this)">
+					<span th:text="${s}"></span>
+				</div>
+
+				<!-- 필터2 : 카테고리 -->
+				<div id="filter_category_div" class="filters">
+					<!-- 필터링 -->
+					<div id="filterDiv">
+						<div id="filter">
+							<div class="filter">
+								<div class="catek">
+									<span>1분류</span>
+								</div>
+								<div class="cate1" th:each="cate : ${category}">
+									<input id="testi" name="filter" type="radio" th:value="${cate}"
+										onclick="filter20(this)"><span th:text="${cate}"></span>
+								</div>
+							</div>
+							<div class="cate2">
+								<div class="catek">
+									<span>2분류</span>
+								</div>
+								<div id="filter2" class="filter"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div>
+					<input type="button" value="결과보기" onclick="randResult()">
+				</div>
+			</div>
+
+			<!-- 랜덤뽑기 결과 Div -->
+			<div id="rand_result_div" class="flex_item_rand">
+				<table id="result_tbl">
+					<tr>
+						<th>상호명</th>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+
+
+
+
+
+		<aside th:insert="~{index::rightside}"></aside>
+	</div>
+</body>
+</html>

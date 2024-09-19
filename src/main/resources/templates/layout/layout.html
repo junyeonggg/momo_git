@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link href="/css/style.css" rel="styleSheet">
+
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f39598f768a070045d169acc3c298b7a"></script>
+
+<script src="/js/script.js"></script>
+<title>Insert title here</title>
+</head>
+<body>
+
+	<header th:fragment="header">
+		<ul class="right_upDiv">
+			<!--  로그인 화면으로 이동  -->
+			<li sec:authorize="isAnonymous()"><a href="/login">로그인</a></li>
+			<!-- 로그인 시 마이페이지, 로그아웃 -->
+			<!-- <li sec:authorize="hasRole('OWNER') or hasRole('ADMIN')"><a href="#">마이페이지</a></li> -->
+			<li sec:authorize="isAuthenticated()"><a
+				href="http://192.168.1.13:8080/mypage">마이페이지</a></li>
+			<li sec:authorize="isAuthenticated()"><a href="/logout">로그아웃</a></li>
+		</ul>
+		<div class="header">
+			<h1>
+				<span class="span_title">모</span>두 <span class="span_title">모</span>였지
+			</h1>
+		</div>
+	</header>
+
+
+<!-- 	<nav class="nav">
+		<ul class="nav_list">
+			<li><a href="http://localhost:8080/">HOME</a></li>
+			<li style="color: #BB2649">|</li>
+			<li><a href="http://localhost:8080/stores">매장 </a></li>
+			<li style="color: #BB2649">|</li>
+			<li><a href="#">추천받기</a></li>
+			<li style="color: #BB2649">|</li>
+			<li><a href="#">랜덤뽑기</a></li>
+			<li style="color: #BB2649">|</li>
+			<li sec:authorize="isAuthenticated()"><a href="/stores/like">관심매장</a></li>
+		</ul>
+	</nav> -->
+	<nav class="nav">
+		<table class="nav_tbl">
+			<tr>
+				<td style="border-left :none"><a href="http://192.168.1.13:8080/">HOME</a></td>
+				<!-- <td><a href="http://192.168.1.13:8080/stores">매장 </a></td> -->
+				<td><a href="#">추천받기</a></td>
+				<td><a href="/randstore">랜덤뽑기</a></td>
+				<td sec:authorize="isAuthenticated()"><a href="/stores/like">관심매장</a></td>
+			</tr>
+		</table>
+	</nav>
+
+	<th:block layout:fragment="section"></th:block>
+	<th:block layout:fragment="section_col"></th:block>
+
+	<footer>footer</footer>
+
+
+
+
+
+
+
+</body>
+</html>

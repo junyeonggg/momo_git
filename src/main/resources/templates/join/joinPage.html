@@ -1,0 +1,106 @@
+<html layout:decorate="~{layout/layout}">
+
+<head>
+<title>로그인</title>
+
+</head>
+<body>
+
+
+	<div layout:fragment="section" class="section">
+	<aside th:insert="~{index::leftside}">ss</aside>
+		<div>
+			<form name="joinForm" action="/join" method="post">
+				<!-- <input name="user_permit" id="user_permit" type="hidden" th:value="${user_type}"> -->
+				<fieldset>
+					<legend>기본 정보</legend>
+					<table>
+						<tr>
+							<td>아이디 :</td>
+							<td><input class="inputJoin" name="user_id" id="user_id" type="text"
+								data-flag="false" data-name="아이디" placeholder="5~12글자로 입력해 주세요."></td>
+							<td>
+								<input id="userIdCheckBtn" type="button" onclick="userIdCheck()"
+										value="중복확인">
+							</td>
+							<td><input id="userIdResetBtn" type="hidden" onclick="userIdReset()" value="바꾸기"></td>
+						</tr>
+						<tr>
+							<td>비밀번호 :</td>
+							<td><input class="inputJoin" name="user_pw" id="user_pw" type="password"
+								data-flag="false" data-name="비밀번호" placeholder="8~15글자로 입력해 주세요."></td>
+						</tr>
+						<tr>
+							<td>비밀번호 확인:</td>
+							<td><input id="user_pw_check" onclick="userPwCheck(this)" type="password" placeholder="8~15글자로 입력해 주세요."></td>
+							<!-- <td><input id="user_pw_check" onclick="userPwCheck(this)" type="password" placeholder="8~15글자로 입력해 주세요."></td> -->
+							<td id="pw_target"></td>
+						</tr>
+						<tr>
+							<td>이름 :</td>
+							<td><input class="inputJoin" name="user_name" id="user_name" type="text"
+								data-flag="false" data-name="이름" placeholder="이름을 입력해 주세요."></td>
+						</tr>
+						<tr>
+							<td>주소 :</td>
+							<td><input class="inputJoin" name="user_addr" id="user_addr" type="text"
+								data-flag="false" data-name="주소" placeholder="주소"></td>
+						</tr>
+						<tr>
+							<td>이메일 :</td>
+							<td><input class="inputJoin" name="user_email" id="user_email" type="email"
+								data-flag="false" data-name="이메일" placeholder="이메일"></td>
+						</tr>
+						<tr>
+							<td>전화번호 :</td>
+							<td><input class="inputJoin" name="user_tel" id="user_tel" type="tel"
+								data-flag="false" data-name="전화번호" placeholder="- 를 빼고 입력해 주세요."></td>
+						</tr>
+
+						<tr>
+							<td>생년월일 :</td>
+							<td><input class="inputJoin" name="user_birth" id="user_birth" type="text"
+								data-flag="false" data-name="생년월일" placeholder="1999.07.17"></td>
+						</tr>
+						<tr>
+							<td>성별 :</td>
+							<td><input class="inputJoin" name="user_gender" data-flag="false" data-name="성별" type="radio"
+								value="M"> 남 
+								<input class="inputJoin" name="user_gender" data-name="성별" data-flag="false"
+								type="radio" value="F"> 여</td>
+						</tr>
+					</table>
+				</fieldset>
+				
+				
+				<!--  ## 필요 없어질 부분( 차후에 옮길 수 있음 )  -->
+<!-- 				<fieldset th:if="${user_type == '5'}">  
+					<legend>매장 정보</legend>
+					<table>
+						<tr>
+							<td>사업자 등록 번호 :</td>
+							<td><input id="owner_eid" name="owner_eid" type="text" placeholder="사업자 번호를 입력해 주세요."></td>
+							<td><input type="button" value="확인"></td>
+						</tr>
+						<tr>
+							<td>매장 번호 :</td>
+							<td><input name="owner_tel" id="owner_tel" type="tel"
+								data-flag="false" placeholder="- 를 빼고 입력해 주세요."></td>
+						</tr>
+						<tr>
+							<td>매장 주소 :</td>
+							<td><input name="owner_addr" id="user_addr2" type="text"
+								data-flag="false" placeholder="매장 주소"></td>
+						</tr>
+					</table>
+				</fieldset> -->
+				<input type="button" onclick="joinFormCheck()" value="가입하기">
+			</form>
+		</div>
+		<aside th:insert="~{index::rightside}">ss</aside>
+	</div>
+
+
+</body>
+</html>
+

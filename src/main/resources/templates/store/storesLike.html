@@ -1,0 +1,76 @@
+<html layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="section" class="section">
+		<aside th:insert="~{index::leftside}"></aside>
+		<div>
+			<!-- section -->
+			<div>
+				<h1>관심매장</h1>
+				<!-- 				<form th:action="@{'/stores?si_do='+${si_do}}">
+					+${si_do}+'&'+'keyword='+${keyword}}">
+					<input name="keyword" type="text"> <input name="si_do"
+						type="hidden" th:value="${si_do}"> <input type="submit"
+						value="검색">
+				</form> -->
+			</div>
+			<div>
+				<!-- 매장들 게시글 형태로 보기  -->
+				<table class="stores_tbl">
+					<tr>
+						<th>번호</th>
+						<th>카테고리</th>
+						<th>상호명</th>
+						<th>조회수</th>
+						<th sec:authorize="isAuthenticated()" style="width: 100px;">관심등록</th>
+					</tr>
+					<tr th:each="store,count : ${stores}" onclick="testt(this)"
+						th:data-eid="${store.owner_eid}">
+						<td style="width: 100px;"
+							th:text="${paging.current_page-1}* ${paging.recordSize} + ${count.count}"></td>
+						<td class="categories" th:text="'<'+${store.category2}+'>'"
+							style="width: 100px;"></td>
+						<td><a th:href="@{'/store?store='+${store.owner_eid}}"
+							th:text="${store.owner_bm}"></a></td>
+						<td th:text="${store.store_view}"></td>
+						<td sec:authorize="isAuthenticated()"
+							th:if="${!(likeStores.contains(store.owner_eid))}"><button
+								class="likeBtn" th:data-owner_eid="${store.owner_eid}"
+								onclick="likeCheck(this)" style="font-size: 20px;">☆</button></td>
+						<td sec:authorize="isAuthenticated()"
+							th:if="${likeStores.contains(store.owner_eid)}"><button
+								style="font-size: 20px;" class="likeBtn"
+								th:data-owner_eid="${store.owner_eid}"
+								onclick="likeUnCheck(this)">★</button></td>
+						<!-- ★ -->
+					</tr>
+
+					<!-- 페이징 -->
+				</table>
+				<div id="pagingDiv">
+					<ul class="paging">
+						<li th:if="${paging.prevPage}"><a
+							th:href="@{'/stores/like?current_page='+${paging.startPage-1}}">이전</a></li>
+						<!-- 이전버튼(th if로 처리)  -->
+						<li th:if="${paging.totDataCnt!=0}"
+							th:each="number : ${#numbers.sequence(paging.startPage,paging.endPage)}"><a
+							th:href="@{'/stores/like?current_page='+${number}}"
+							th:text="${number}"></a></li>
+						<!-- 페이지 숫자 반복 -->
+						<li th:if="${paging.nextPage}"><a
+							th:href="@{'/stores/like?current_page='+${paging.endPage+1}}">다음</a></li>
+						<!-- 다음버튼(th if로 처리)  -->
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+
+		<aside th:insert="~{index::rightside}"></aside>
+	</div>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<html layout:decorate="~{layout/layout}">
+
+<head>
+<title>로그인</title>
+
+</head>
+<body>
+
+
+	<div layout:fragment="section" class="section2">
+		<aside th:insert="~{index::leftside}">ss</aside>
+		<div class="login">
+			<div class="section_login">
+				<div class="login_flex_col">
+					<div class="login_title">
+						<b>로그인</b>
+					</div>
+					<form action="/login" method="post">
+						<table>
+							<tr>
+								<th>아이디 :</th>
+								<td><input name="username" type="text"></td>
+							</tr>
+							<tr>
+								<th>비밀번호 :</th>
+								<td><input name="password" type="password"></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<!--   회원가입 폼으로 이동   -->
+								</td>
+							</tr>
+						</table>
+						<div class="join_div">
+							<input type="submit" value="로그인">
+						</div>
+					</form>
+				</div>
+				<div class="line"></div>
+				<div class="login_flex_col">
+					<div class="login_title">
+						<b>아이디 / 비밀번호<br>찾기
+						</b>
+					</div>
+					<table class="target_tbl">
+						<tr>
+							<td><div class="findbtn">
+									<a href="#" onclick="openModal(findIdModal)">아이디 찾기</a>
+								</div></td>
+						</tr>
+						<tr>
+							<td><div class="findbtn">
+									<a href="#" onclick="openModal(findPwModal)">비밀번호 찾기</a>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+
+
+				<div id="findIdModal"
+					style="display: none; background-color: rgba(0, 0, 0, 0.4); position: absolute; justify-content: center; top: 0; left: 0; width: 100%; height: 100%;"
+					class="modal">
+					<div
+						style="position: absolute; top: 50%; padding: 40px; text-align: center; background-color: rgb(255, 255, 255); border-radius: 10px; box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15); transform: translateY(-50%);"
+						class="modal_body">
+						<h2>아이디찾기</h2>
+						<div>
+							<table>
+								<tr>
+									<td>이름 :</td>
+									<td><input id="findId_name" type="text" placeholder="이름"></td>
+								</tr>
+								<tr>
+									<td>이메일 :</td>
+									<td><input id="findId_email" type="email"
+										placeholder="asd@naver.com"></td>
+								</tr>
+								<tr>
+									<td>전화번호 :</td>
+									<td><input id="findId_tel" type="text"
+										placeholder="01012345678"></td>
+								</tr>
+							</table>
+							<div>
+								<input type="button" onclick="findId()" value="확인"> <input
+									type="button" onclick="escModal(findIdModal)" value="취소">
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 비밀번호 찾기 모달 창 -->
+				<div id="findPwModal"
+					style="display: none; background-color: rgba(0, 0, 0, 0.4); position: absolute; justify-content: center; top: 0; left: 0; width: 100%; height: 100%;"
+					class="modal">
+					<div
+						style="position: absolute; top: 50%; padding: 40px; text-align: center; background-color: rgb(255, 255, 255); border-radius: 10px; box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15); transform: translateY(-50%);"
+						class="modal_body">
+						<h2>비밀번호 찾기</h2>
+						<div>
+							<table>
+								<tr>
+									<td>아이디 :</td>
+									<td><input id="findPw_id" type="text" placeholder="아이디"></td>
+								</tr>
+								<tr>
+									<td>이름 :</td>
+									<td><input id="findPw_name" type="text" placeholder="이름"></td>
+								</tr>
+								<tr>
+									<td>이메일 :</td>
+									<td><input id="findPw_email" type="email"
+										placeholder="asd@naver.com"></td>
+								</tr>
+								<tr>
+									<td>전화번호 :</td>
+									<td><input id="findPw_tel" type="text"
+										placeholder="01012345678"></td>
+								</tr>
+							</table>
+							<div>
+								<input type="button" onclick="findPw()" value="확인"> <input
+									type="button" onclick="escModal(findPwModal)" value="취소">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="join_div">
+				<a href="#" onclick="openModal(joinModal)">회원가입하기</a>
+			</div>
+		</div>
+		<aside th:insert="~{index::rightside}"></aside>
+
+		<!-- 회원가입 모달창 -->
+		<div id="joinModal" class="joinModal">
+			<div class="joinModal_body">
+				<form name="joinForm" action="/join" method="post">
+					<div id="joinModalEscBtn">
+						<input type="button"
+							onclick="escModal(joinModal)" value="X">
+					</div>
+					<h2>회원가입</h2>
+					<table>
+						<tr>
+							<td>아이디 :</td>
+							<td><input class="inputJoin" name="user_id" id="user_id"
+								type="text" data-flag="false" data-name="아이디"
+								placeholder="5~12글자로 입력해 주세요."></td>
+							<td><input id="userIdCheckBtn" type="button"
+								onclick="userIdCheck()" value="중복확인"></td>
+							<td><input id="userIdResetBtn" type="hidden"
+								onclick="userIdReset()" value="바꾸기"></td>
+						</tr>
+						<tr hidden="hidden">
+							<td>비밀번호 :</td>
+							<td><input class="inputJoin" name="user_pw" id="user_pw"
+								type="password" data-flag="false" data-name="비밀번호"
+								placeholder="8~15글자로 입력해 주세요."></td>
+						</tr>
+						<tr hidden="hidden">
+							<td>비밀번호 확인:</td>
+							<td><input id="user_pw_check" onclick="userPwCheck(this)"
+								type="password" placeholder="8~15글자로 입력해 주세요."></td>
+							<!-- <td><input id="user_pw_check" onclick="userPwCheck(this)" type="password" placeholder="8~15글자로 입력해 주세요."></td> -->
+						</tr>
+						<tr>
+							<td></td>
+							<td id="pw_target"></td>
+						</tr>
+						<tr hidden="hidden">
+							<td>이름 :</td>
+							<td><input class="inputJoin" name="user_name" id="user_name"
+								type="text" data-flag="false" data-name="이름"
+								placeholder="이름을 입력해 주세요."></td>
+						</tr>
+						<tr hidden="hidden">
+							<td>주소 :</td>
+							<td><input class="inputJoin" name="user_addr" id="user_addr"
+								type="text" data-flag="false" data-name="주소" placeholder="주소"></td>
+						</tr>
+						<tr hidden="hidden">
+							<td>이메일 :</td>
+							<td><input class="inputJoin" name="user_email"
+								id="user_email" type="email" data-flag="false" data-name="이메일"
+								placeholder="이메일"></td>
+						</tr>
+						<tr hidden="hidden">
+							<td>전화번호 :</td>
+							<td><input class="inputJoin" name="user_tel" id="user_tel"
+								type="tel" data-flag="false" data-name="전화번호"
+								placeholder="- 를 빼고 입력해 주세요."></td>
+						</tr>
+						<tr hidden="hidden">
+							<td>생년월일 :</td>
+							<td><input class="inputJoin" name="user_birth"
+								id="user_birth" type="text" data-flag="false" data-name="생년월일"
+								placeholder="1999.07.17"></td>
+						</tr>
+						<tr hidden="hidden">
+							<td>성별 :</td>
+							<td><input class="inputJoin" name="user_gender"
+								data-flag="false" data-name="성별" type="radio" value="M">
+								남 <input class="inputJoin" name="user_gender" data-name="성별"
+								data-flag="false" type="radio" value="F"> 여</td>
+						</tr>
+						<tr hidden="hidden">
+							<td><input type="button" onclick="joinFormCheck()"
+								value="가입하기"></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+
+
+	</div>
+</body>
+</html>
